@@ -16,7 +16,7 @@ from pr_review.config import ProviderConfig
 from pr_review.errors import ProviderError, ProviderUnavailable
 from pr_review.providers.base import PROVIDERS, http_error
 
-_USER_AGENT = "pr-review/1.0 (+https://github.com/ism00efe/kuhaku)"
+_USER_AGENT = "pr-review/1.0 (+https://github.com/ism00efe/prism)"
 
 
 @PROVIDERS.register("openai_compat")

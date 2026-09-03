@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: ism00efe/kuhaku/pr-review@pr-review-v0.1.0   # or ./pr-review from within this repo
+      - uses: ism00efe/prism@v0.1.0   # or ./ from within this repo
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -91,11 +91,11 @@ to work around it -- that runs fork-authored code with write access and secrets.
 
 ## Using it from another repository
 
-The engine is a composite action living in a subdirectory, so any repository can
-call it by path -- there is nothing to copy or vendor:
+The engine is a composite action living at the repository root, so any repository
+can call it by tag -- there is nothing to copy or vendor:
 
 ```yaml
-- uses: ism00efe/kuhaku/pr-review@pr-review-v0.1.0
+- uses: ism00efe/prism@v0.1.0
 ```
 
 Pin the tag rather than `@main`: a branch ref moves under you, and an upstream
