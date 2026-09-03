@@ -83,9 +83,7 @@ class LLMVerifier:
         prompt = self._prompt(finding, repo_root, pr, analysis, prior)
 
         try:
-            completion = self.dispatcher.complete(
-                "verify", prompt, system=_SYSTEM, temperature=0.0
-            )
+            completion = self.dispatcher.complete("verify", prompt, system=_SYSTEM, temperature=0.0)
             data = extract_json(completion.text)
         except (ProviderError, ValueError) as exc:
             return VerdictResult(
@@ -125,9 +123,7 @@ A reviewer made this claim about a pull request:
   reasoning: {finding.reasoning}
 """
         notes = [
-            _PRECHECK_NOTES[c]
-            for c in (prior.checks if prior else [])
-            if c in _PRECHECK_NOTES
+            _PRECHECK_NOTES[c] for c in (prior.checks if prior else []) if c in _PRECHECK_NOTES
         ]
         precheck = ("\nPRE-CHECKS:\n" + "\n".join(f"- {n}" for n in notes)) if notes else ""
 
@@ -184,7 +180,5 @@ Decide whether the evidence supports the claim. Respond with ONLY:
 
 VERIFIERS.register(
     "llm",
-    lambda config, selector, dispatcher=None, **_k: LLMVerifier(
-        config, selector, dispatcher
-    ),
+    lambda config, selector, dispatcher=None, **_k: LLMVerifier(config, selector, dispatcher),
 )

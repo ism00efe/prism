@@ -76,8 +76,7 @@ class Dispatcher:
     def notes(self) -> list[str]:
         """Deduplicated failover / degradation events, in the order they arose."""
         return [
-            event if count == 1 else f"{event} (x{count})"
-            for event, count in self._events.items()
+            event if count == 1 else f"{event} (x{count})" for event, count in self._events.items()
         ]
 
     def _note(self, event: str) -> None:
@@ -185,9 +184,7 @@ class Dispatcher:
                     prompt,
                     model=candidate.model,
                     max_tokens=candidate.max_tokens,
-                    temperature=(
-                        candidate.temperature if temperature is None else temperature
-                    ),
+                    temperature=(candidate.temperature if temperature is None else temperature),
                     system=system,
                 )
             except ProviderUnavailable:

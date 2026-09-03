@@ -49,7 +49,9 @@ def test_a_large_change_reaches_the_analyser_whole(tiny_repo: Path):
     subprocess.run(["git", "add", "-A"], cwd=tiny_repo, check=True, capture_output=True)
     subprocess.run(
         ["git", "commit", "-m", "feat: many modules"],
-        cwd=tiny_repo, check=True, capture_output=True,
+        cwd=tiny_repo,
+        check=True,
+        capture_output=True,
     )
 
     pr, _root = LocalGitSource(tiny_repo, base_ref="main", head_ref="HEAD").load()
@@ -128,7 +130,7 @@ def test_a_change_that_fits_is_one_pass(monkeypatch):
     cfg = load_config("/nonexistent")
     tasks = Planner(cfg).build(_plan(), _analysis({"a.py": 500, "b.py": 500}))
     assert len(tasks) == 1
-    assert tasks[0].files == ()          # the whole change
+    assert tasks[0].files == ()  # the whole change
     assert tasks[0].pass_count == 1
 
 
@@ -143,7 +145,7 @@ def test_a_change_that_does_not_fit_is_split_and_fully_covered(monkeypatch):
     assert len(tasks) > 1
     assert all(t.pass_count == len(tasks) for t in tasks)
     covered = [p for t in tasks for p in t.files]
-    assert sorted(covered) == sorted(sizes)      # every file, exactly once
+    assert sorted(covered) == sorted(sizes)  # every file, exactly once
     assert len(covered) == len(set(covered))
     for t in tasks:
         assert sum(sizes[p] for p in t.files) <= budget or len(t.files) == 1
@@ -162,7 +164,10 @@ def test_the_pass_cap_is_a_spend_dial_and_is_reported(monkeypatch):
 
     result = ReviewResult(
         pr=PRContext("t", "", "main", "f", "0", "1", ""),
-        repo=RepoMetadata(), analysis=analysis, plan=_plan(), tasks=tasks,
+        repo=RepoMetadata(),
+        analysis=analysis,
+        plan=_plan(),
+        tasks=tasks,
         stats={"mode": "llm"},
     )
     assert len(result.reviewed_paths()) == 2
@@ -179,15 +184,18 @@ def test_the_pass_cap_is_a_spend_dial_and_is_reported(monkeypatch):
 # --------------------------------------------------------------------------- #
 
 
-def test_a_pass_carries_only_its_files_but_names_the_others(
-    tiny_repo: Path, sample_diff: str
-):
+def test_a_pass_carries_only_its_files_but_names_the_others(tiny_repo: Path, sample_diff: str):
     pr = PRContext("t", "", "main", "feature", "0", "1", sample_diff)
     analysis = _analysis({"src/calc.py": 400, "pyproject.toml": 200})
     task = ReviewTask(
-        axis="correctness", depth="basic", model_tier="basic",
-        context_strategy="default", context_spec=ContextSpec(),
-        files=("src/calc.py",), pass_index=1, pass_count=2,
+        axis="correctness",
+        depth="basic",
+        model_tier="basic",
+        context_strategy="default",
+        context_spec=ContextSpec(),
+        files=("src/calc.py",),
+        pass_index=1,
+        pass_count=2,
         input_budget_bytes=60_000,
     )
 

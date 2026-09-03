@@ -64,7 +64,8 @@ class MarkdownReporter:
             )
 
         surfaced = [
-            vf for vf in result.surfaced()
+            vf
+            for vf in result.surfaced()
             if vf.result.verdict != Verdict.UNCERTAIN or vf.finding.severity != "info"
         ] or result.surfaced()
         surfaced.sort(
@@ -103,12 +104,9 @@ class MarkdownReporter:
             if vf.result.evidence:
                 out.append(f"  - _verification_: {vf.result.evidence[:240]}")
 
-        disproven = [
-            vf for vf in result.findings if vf.result.verdict == Verdict.INVALID
-        ]
+        disproven = [vf for vf in result.findings if vf.result.verdict == Verdict.INVALID]
         if disproven:
-            out.append("\n<details><summary>Disproven claims "
-                       f"({len(disproven)})</summary>\n")
+            out.append(f"\n<details><summary>Disproven claims ({len(disproven)})</summary>\n")
             for vf in disproven:
                 out.append(
                     f"- `{vf.finding.file}` {vf.finding.issue} — "
@@ -119,8 +117,10 @@ class MarkdownReporter:
         out.append("\n<details><summary>Review plan &amp; stats</summary>\n")
         out.append("```")
         out.append(f"repo language: {result.repo.primary_language() or 'unknown'}")
-        out.append(f"changed files: {result.analysis.changed_file_count} "
-                   f"(+{result.analysis.total_additions}/-{result.analysis.total_deletions})")
+        out.append(
+            f"changed files: {result.analysis.changed_file_count} "
+            f"(+{result.analysis.total_additions}/-{result.analysis.total_deletions})"
+        )
         for e in plan.entries:
             out.append(f"  {e.axis:12} {e.depth:6} {e.reason}")
         out.append(f"files reviewed: {seen}/{total} in {passes} pass(es) per axis")

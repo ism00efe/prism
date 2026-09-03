@@ -53,18 +53,12 @@ class FileDiff:
 
     def added_lines(self) -> list[tuple[int, str]]:
         return [
-            (ln.new_lineno or 0, ln.text)
-            for h in self.hunks
-            for ln in h.lines
-            if ln.kind == "+"
+            (ln.new_lineno or 0, ln.text) for h in self.hunks for ln in h.lines if ln.kind == "+"
         ]
 
     def removed_lines(self) -> list[tuple[int, str]]:
         return [
-            (ln.old_lineno or 0, ln.text)
-            for h in self.hunks
-            for ln in h.lines
-            if ln.kind == "-"
+            (ln.old_lineno or 0, ln.text) for h in self.hunks for ln in h.lines if ln.kind == "-"
         ]
 
 

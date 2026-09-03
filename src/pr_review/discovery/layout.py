@@ -8,22 +8,51 @@ from pr_review.discovery.base import DISCOVERERS
 from pr_review.models import RepoMetadata
 
 _CONFIG_FILES = {
-    ".editorconfig", ".gitignore", ".pre-commit-config.yaml", "tox.ini", "noxfile.py",
-    ".flake8", ".pylintrc", "ruff.toml", ".ruff.toml", "mypy.ini", ".golangci.yml",
-    ".golangci.yaml", ".eslintrc", ".eslintrc.js", ".eslintrc.json", ".prettierrc",
-    "rustfmt.toml", ".rubocop.yml", "Makefile", "justfile", ".env.example",
+    ".editorconfig",
+    ".gitignore",
+    ".pre-commit-config.yaml",
+    "tox.ini",
+    "noxfile.py",
+    ".flake8",
+    ".pylintrc",
+    "ruff.toml",
+    ".ruff.toml",
+    "mypy.ini",
+    ".golangci.yml",
+    ".golangci.yaml",
+    ".eslintrc",
+    ".eslintrc.js",
+    ".eslintrc.json",
+    ".prettierrc",
+    "rustfmt.toml",
+    ".rubocop.yml",
+    "Makefile",
+    "justfile",
+    ".env.example",
 }
 _LINTER_MARKERS = {
-    "ruff.toml": "ruff", ".ruff.toml": "ruff", ".flake8": "flake8",
-    ".pylintrc": "pylint", "mypy.ini": "mypy", ".golangci.yml": "golangci-lint",
-    ".golangci.yaml": "golangci-lint", ".eslintrc": "eslint", ".eslintrc.js": "eslint",
-    ".eslintrc.json": "eslint", ".rubocop.yml": "rubocop",
+    "ruff.toml": "ruff",
+    ".ruff.toml": "ruff",
+    ".flake8": "flake8",
+    ".pylintrc": "pylint",
+    "mypy.ini": "mypy",
+    ".golangci.yml": "golangci-lint",
+    ".golangci.yaml": "golangci-lint",
+    ".eslintrc": "eslint",
+    ".eslintrc.js": "eslint",
+    ".eslintrc.json": "eslint",
+    ".rubocop.yml": "rubocop",
 }
 _TEST_DIR_NAMES = {"tests", "test", "spec", "__tests__", "e2e", "it"}
 _DOC_DIR_NAMES = {"docs", "doc", "documentation"}
 _ARCH_DOC_NAMES = {
-    "architecture.md", "architecture.rst", "design.md", "adr", "docs/architecture.md",
-    "contributing.md", "agents.md",
+    "architecture.md",
+    "architecture.rst",
+    "design.md",
+    "adr",
+    "docs/architecture.md",
+    "contributing.md",
+    "agents.md",
 }
 
 

@@ -7,7 +7,7 @@ def test_parses_files_hunks_and_line_numbers(sample_diff):
     calc = files[0]
     assert calc.status == "modified"
     added = calc.added_lines()
-    assert ("def modulo(a, b):" in [t for _, t in added])
+    assert "def modulo(a, b):" in [t for _, t in added]
     # new line numbers are tracked
     nums = [n for n, t in added if t == "def modulo(a, b):"]
     assert nums and nums[0] == 5

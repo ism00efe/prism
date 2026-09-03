@@ -41,8 +41,7 @@ def tiny_repo(tmp_path: Path) -> Path:
         "def modulo(a, b):\n    return a % b\n"
     )
     (repo / "pyproject.toml").write_text(
-        '[project]\nname = "demo"\nversion = "0.1.0"\n'
-        'dependencies = ["requests", "httpx"]\n'
+        '[project]\nname = "demo"\nversion = "0.1.0"\ndependencies = ["requests", "httpx"]\n'
     )
     _git(["add", "-A"], repo)
     _git(["commit", "-m", "feat: add modulo and a new dependency"], repo)

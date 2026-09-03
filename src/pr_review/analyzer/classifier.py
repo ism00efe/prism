@@ -63,18 +63,14 @@ class Classifier:
 
     # ------------------------------------------------------------------ #
 
-    def _prompt(
-        self, a: DeterministicAnalysis, meta: RepoMetadata, pr: PRContext
-    ) -> str:
+    def _prompt(self, a: DeterministicAnalysis, meta: RepoMetadata, pr: PRContext) -> str:
         axes = ", ".join(self.config.enabled_axes)
         depths = ", ".join([Depth.OFF.value, *self.config.enabled_depths])
         files = "\n".join(
             f"  {f.status:8} +{f.additions} -{f.deletions} {f.path}"
             for f in a.files[: self.config.limits.max_changed_files_listed]
         )
-        syms = ", ".join(
-            f"{s.change} {s.kind} {s.name}" for s in a.changed_symbols[:25]
-        )
+        syms = ", ".join(f"{s.change} {s.kind} {s.name}" for s in a.changed_symbols[:25])
         return f"""TASK: plan
 Decide which review axes to run and how deep, for this pull request.
 
@@ -149,9 +145,7 @@ interfaces/structure."""
 
     # ------------------------------------------------------------------ #
 
-    def _heuristic(
-        self, a: DeterministicAnalysis, meta: RepoMetadata, pr: PRContext
-    ) -> ReviewPlan:
+    def _heuristic(self, a: DeterministicAnalysis, meta: RepoMetadata, pr: PRContext) -> ReviewPlan:
         s = a.signals
         enabled = set(self.config.enabled_axes)
         entries: dict[str, PlanEntry] = {}
@@ -204,9 +198,14 @@ interfaces/structure."""
     def _change_type(a: DeterministicAnalysis, pr: PRContext) -> str:
         title = pr.title.lower()
         for kw, label in (
-            ("fix", "bugfix"), ("bug", "bugfix"), ("feat", "feature"),
-            ("refactor", "refactor"), ("docs", "docs"), ("test", "tests"),
-            ("chore", "chore"), ("perf", "performance"),
+            ("fix", "bugfix"),
+            ("bug", "bugfix"),
+            ("feat", "feature"),
+            ("refactor", "refactor"),
+            ("docs", "docs"),
+            ("test", "tests"),
+            ("chore", "chore"),
+            ("perf", "performance"),
         ):
             if title.startswith(kw) or f"{kw}:" in title or f"{kw}(" in title:
                 return label

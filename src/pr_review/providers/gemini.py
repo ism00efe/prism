@@ -38,9 +38,7 @@ class GeminiProvider:
     ) -> str:
         key = self.cfg.api_key()
         if not key:
-            raise ProviderUnavailable(
-                f"no API key: set ${self.cfg.api_key_env} for gemini"
-            )
+            raise ProviderUnavailable(f"no API key: set ${self.cfg.api_key_env} for gemini")
         payload: dict = {
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {

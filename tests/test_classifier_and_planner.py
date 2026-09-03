@@ -8,8 +8,13 @@ from pr_review.providers.selector import ModelSelector
 
 def _pr(diff, title="feat: add modulo"):
     return PRContext(
-        title=title, body="adds a modulo helper", base_ref="main", head_ref="f",
-        base_sha="0", head_sha="1", diff=diff,
+        title=title,
+        body="adds a modulo helper",
+        base_ref="main",
+        head_ref="f",
+        base_sha="0",
+        head_sha="1",
+        diff=diff,
     )
 
 

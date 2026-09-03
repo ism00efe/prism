@@ -32,9 +32,7 @@ class GitHubActionsSource:
 
     def load(self) -> tuple[PRContext, Path]:
         if not self.event_path or not Path(self.event_path).is_file():
-            raise SourceError(
-                "no GitHub event file; use --base/--head for a local run instead"
-            )
+            raise SourceError("no GitHub event file; use --base/--head for a local run instead")
         event = json.loads(Path(self.event_path).read_text("utf-8"))
         pr = event.get("pull_request")
         if not pr:

@@ -60,7 +60,9 @@ class DeterministicVerifier:
             if path not in changed:
                 checks.append(f"cited file '{path}' does not exist and is not in the diff")
                 return VerdictResult(
-                    Verdict.INVALID, evidence="; ".join(checks), method="deterministic",
+                    Verdict.INVALID,
+                    evidence="; ".join(checks),
+                    method="deterministic",
                     checks=checks,
                 )
             checks.append(f"cited file '{path}' is in the diff but not on disk")
@@ -82,7 +84,9 @@ class DeterministicVerifier:
                     f"cited line {finding.line} out of range (file has {len(lines)} lines)"
                 )
                 return VerdictResult(
-                    Verdict.INVALID, evidence="; ".join(checks), method="deterministic",
+                    Verdict.INVALID,
+                    evidence="; ".join(checks),
+                    method="deterministic",
                     checks=checks,
                 )
 

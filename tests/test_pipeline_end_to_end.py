@@ -47,9 +47,7 @@ def test_docs_only_change_is_shallow(tiny_repo: Path):
         ["git", "commit", "-m", "docs: tweak"], cwd=tiny_repo, check=True, capture_output=True
     )
     cfg = load_config(tiny_repo, overrides={"force_provider": "mock", "classifier_enabled": False})
-    result = Pipeline(cfg).run(
-        LocalGitSource(tiny_repo, base_ref="HEAD~1", head_ref="HEAD")
-    )
+    result = Pipeline(cfg).run(LocalGitSource(tiny_repo, base_ref="HEAD~1", head_ref="HEAD"))
     # heuristic: docs-only -> scope only, no deep axes
     depths = {t.depth for t in result.tasks}
     assert depths <= {"basic"}

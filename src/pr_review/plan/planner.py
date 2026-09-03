@@ -55,9 +55,7 @@ class Planner:
 
     # ------------------------------------------------------------------ #
 
-    def _tasks(
-        self, entry: PlanEntry, analysis: DeterministicAnalysis | None
-    ) -> list[ReviewTask]:
+    def _tasks(self, entry: PlanEntry, analysis: DeterministicAnalysis | None) -> list[ReviewTask]:
         axis = AXES.create(entry.axis)
         depth = DEPTHS.create(entry.depth)
         tier = self.config.depth_tier.get(entry.depth, depth.default_model_tier)
@@ -87,9 +85,7 @@ class Planner:
         # and fails past -- wasteful, but never silently wrong.
         return chain[0].input_budget_bytes if chain else _FALLBACK_BUDGET
 
-    def _split(
-        self, analysis: DeterministicAnalysis | None, budget: int
-    ) -> list[list[str]]:
+    def _split(self, analysis: DeterministicAnalysis | None, budget: int) -> list[list[str]]:
         """Pack the changed files into passes that each fit one request."""
         if analysis is None or not analysis.files:
             return []

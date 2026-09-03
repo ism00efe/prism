@@ -31,8 +31,12 @@ from pr_review.verification.router import VerificationRouter
 
 def _finding(**kw) -> Finding:
     base = dict(
-        axis="correctness", severity="blocker", file="src/thing.py", line=None,
-        issue="guard is documented but never wired in", evidence="quoted line",
+        axis="correctness",
+        severity="blocker",
+        file="src/thing.py",
+        line=None,
+        issue="guard is documented but never wired in",
+        evidence="quoted line",
         confidence=0.5,
     )
     base.update(kw)
@@ -96,15 +100,18 @@ def test_the_original_bad_blocker_cannot_recur(tmp_path: Path):
     pr = PRContext("t", "", "main", "f", "0", "1", "")
 
     det = DeterministicVerifier().verify(
-        finding, repo_root=tmp_path, pr=pr,
-        analysis=DeterministicAnalysis(), meta=RepoMetadata(),
+        finding,
+        repo_root=tmp_path,
+        pr=pr,
+        analysis=DeterministicAnalysis(),
+        meta=RepoMetadata(),
     )
     assert EVIDENCE_NOT_ANCHORED in det.checks
 
     router = _router()
-    router.adjust(finding, det)          # unquotable -> confidence capped to 0.6
+    router.adjust(finding, det)  # unquotable -> confidence capped to 0.6
     vf = VerifiedFinding(finding, det)
-    router.enforce_blocker_bar(vf)       # ... and 0.6 cannot carry a blocker
+    router.enforce_blocker_bar(vf)  # ... and 0.6 cannot carry a blocker
 
     assert finding.confidence == 0.6
     assert finding.severity == "warning"

@@ -98,17 +98,19 @@ class Pipeline:
             "duration_seconds": round(time.time() - t0, 2),
             "tasks_run": len(tasks),
             "raw_findings": len(raw_findings),
-            "surfaced_findings": sum(
-                1 for vf in verified if vf.result.verdict != Verdict.INVALID
-            ),
+            "surfaced_findings": sum(1 for vf in verified if vf.result.verdict != Verdict.INVALID),
             "plan_source": plan.source,
-            "llm_verifications": sum(
-                1 for vf in verified if vf.result.method == "llm"
-            ),
+            "llm_verifications": sum(1 for vf in verified if vf.result.method == "llm"),
         }
         return ReviewResult(
-            pr=pr, repo=meta, analysis=analysis, plan=plan, tasks=tasks,
-            findings=verified, errors=errors, notes=list(self.dispatcher.notes),
+            pr=pr,
+            repo=meta,
+            analysis=analysis,
+            plan=plan,
+            tasks=tasks,
+            findings=verified,
+            errors=errors,
+            notes=list(self.dispatcher.notes),
             stats=stats,
         )
 
@@ -158,19 +160,13 @@ class Pipeline:
 
         def one(task: ReviewTask) -> list[Finding]:
             try:
-                ctx = gatherer.gather(
-                    task, repo_root=root, pr=pr, analysis=analysis, meta=meta
-                )
+                ctx = gatherer.gather(task, repo_root=root, pr=pr, analysis=analysis, meta=meta)
                 return reviewer.run(task, ctx, pr)
             except PRReviewError as exc:
-                errors.append(
-                    StageError("review", f"{task.axis}/{task.depth}: {exc}")
-                )
+                errors.append(StageError("review", f"{task.axis}/{task.depth}: {exc}"))
                 return []
             except Exception as exc:  # noqa: BLE001
-                errors.append(
-                    StageError("review", f"{task.axis}/{task.depth}: unexpected {exc}")
-                )
+                errors.append(StageError("review", f"{task.axis}/{task.depth}: unexpected {exc}"))
                 return []
 
         findings: list[Finding] = []
@@ -226,9 +222,7 @@ class Pipeline:
             result = VerdictResult(Verdict.UNCERTAIN, method="skipped")
             if det is not None:
                 try:
-                    result = det.verify(
-                        f, repo_root=root, pr=pr, analysis=analysis, meta=meta
-                    )
+                    result = det.verify(f, repo_root=root, pr=pr, analysis=analysis, meta=meta)
                 except Exception as exc:  # noqa: BLE001
                     errors.append(StageError("verification", f"deterministic: {exc}"))
             # What the cheap pass learned shapes both the finding's confidence
@@ -238,7 +232,11 @@ class Pipeline:
                 llm_budget -= 1
                 try:
                     llm_res = llm.verify(
-                        f, repo_root=root, pr=pr, analysis=analysis, meta=meta,
+                        f,
+                        repo_root=root,
+                        pr=pr,
+                        analysis=analysis,
+                        meta=meta,
                         prior=result,
                     )
                     if llm_res.verdict != Verdict.UNCERTAIN or result.verdict == Verdict.UNCERTAIN:

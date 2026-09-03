@@ -11,9 +11,26 @@ from pr_review.models import RepoMetadata
 from pr_review.registry import Registry
 
 _IGNORE_DIRS = {
-    ".git", ".hg", ".svn", "node_modules", ".venv", "venv", "__pycache__",
-    ".mypy_cache", ".pytest_cache", ".ruff_cache", "dist", "build", "target",
-    ".idea", ".vscode", ".tox", "vendor", ".next", ".gradle", "coverage",
+    ".git",
+    ".hg",
+    ".svn",
+    "node_modules",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "dist",
+    "build",
+    "target",
+    ".idea",
+    ".vscode",
+    ".tox",
+    "vendor",
+    ".next",
+    ".gradle",
+    "coverage",
 }
 
 
@@ -44,9 +61,17 @@ def merge_metadata(parts: list[RepoMetadata], root: Path) -> RepoMetadata:
         for lang, n in p.languages.items():
             out.languages[lang] = out.languages.get(lang, 0) + n
         for attr in (
-            "package_managers", "dependency_files", "frameworks", "top_level_dirs",
-            "config_files", "test_paths", "doc_paths", "architecture_docs",
-            "static_analysis_tools", "public_api_hints", "notes",
+            "package_managers",
+            "dependency_files",
+            "frameworks",
+            "top_level_dirs",
+            "config_files",
+            "test_paths",
+            "doc_paths",
+            "architecture_docs",
+            "static_analysis_tools",
+            "public_api_hints",
+            "notes",
         ):
             merged = list(dict.fromkeys(getattr(out, attr) + getattr(p, attr)))
             setattr(out, attr, merged)

@@ -68,9 +68,7 @@ class DefaultContextGatherer:
         elsewhere = [f for f in analysis.files if f.path not in in_scope]
         if elsewhere:
             listed = elsewhere[: self.config_max_listed]
-            rows = [
-                f"  {f.status:8} +{f.additions} -{f.deletions} {f.path}" for f in listed
-            ]
+            rows = [f"  {f.status:8} +{f.additions} -{f.deletions} {f.path}" for f in listed]
             if len(elsewhere) > len(listed):
                 rows.append(f"  … and {len(elsewhere) - len(listed)} more")
             add(
@@ -162,8 +160,24 @@ class DefaultContextGatherer:
 
 
 _CODE_SUFFIXES = {
-    ".py", ".js", ".jsx", ".ts", ".tsx", ".go", ".rs", ".java", ".kt", ".rb",
-    ".php", ".cs", ".c", ".h", ".cc", ".cpp", ".swift", ".scala",
+    ".py",
+    ".js",
+    ".jsx",
+    ".ts",
+    ".tsx",
+    ".go",
+    ".rs",
+    ".java",
+    ".kt",
+    ".rb",
+    ".php",
+    ".cs",
+    ".c",
+    ".h",
+    ".cc",
+    ".cpp",
+    ".swift",
+    ".scala",
 }
 
 
@@ -175,9 +189,7 @@ def _read(path: Path, *, max_bytes: int = 60_000) -> str | None:
         return None
 
 
-def _windows(
-    text: str, path: str, analysis: DeterministicAnalysis, radius: int
-) -> str:
+def _windows(text: str, path: str, analysis: DeterministicAnalysis, radius: int) -> str:
     lines = text.splitlines()
     names = [s.name for s in analysis.changed_symbols if s.path == path]
     if not names:
@@ -200,9 +212,7 @@ def _windows(
 def _tree(root: Path, *, max_entries: int = 200) -> str:
     out: list[str] = []
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = sorted(
-            d for d in dirnames if d not in _SKIP_DIRS and not d.startswith(".")
-        )
+        dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS and not d.startswith("."))
         rel = Path(dirpath).relative_to(root)
         depth = len(rel.parts)
         if depth > 3:

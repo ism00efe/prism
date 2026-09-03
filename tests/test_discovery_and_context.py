@@ -26,7 +26,9 @@ def test_context_respects_spec(tiny_repo: Path, sample_diff: str):
     meta = _meta(tiny_repo)
 
     shallow = ReviewTask(
-        axis="correctness", depth="basic", model_tier="basic",
+        axis="correctness",
+        depth="basic",
+        model_tier="basic",
         context_strategy="default",
         context_spec=ContextSpec(callers_usages=False, dependency_files=False, repo_tree=False),
         input_budget_bytes=60_000,
@@ -40,10 +42,11 @@ def test_context_respects_spec(tiny_repo: Path, sample_diff: str):
     assert "dependency" not in kinds
 
     deep = ReviewTask(
-        axis="structure", depth="deep", model_tier="deep", context_strategy="default",
-        context_spec=ContextSpec(
-            dependency_files=True, architecture_docs=True, repo_tree=True
-        ),
+        axis="structure",
+        depth="deep",
+        model_tier="deep",
+        context_strategy="default",
+        context_spec=ContextSpec(dependency_files=True, architecture_docs=True, repo_tree=True),
         input_budget_bytes=60_000,
     )
     ctx2 = DefaultContextGatherer().gather(

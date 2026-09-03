@@ -77,9 +77,7 @@ def _config(primary_kind: str, *, degradation: tuple[str, ...] = ()) -> Config:
             kind="t_throttled", api_key_env="THROTTLED_KEY", default_model="m-throttled"
         ),
         "ok": ProviderConfig(kind="t_ok", api_key_env="OK_KEY", default_model="m-ok"),
-        "unkeyed": ProviderConfig(
-            kind="t_ok", api_key_env="ABSENT_KEY", default_model="m-unkeyed"
-        ),
+        "unkeyed": ProviderConfig(kind="t_ok", api_key_env="ABSENT_KEY", default_model="m-unkeyed"),
     }
     primary = {"t_gone": "gone", "t_throttled": "throttled", "t_ok": "ok"}[primary_kind]
     return Config(
@@ -239,9 +237,7 @@ def test_structural_only_run_invents_nothing(tiny_repo: Path, monkeypatch):
     cfg = load_config(tiny_repo)
     assert not cfg.has_llm()
 
-    result = Pipeline(cfg).run(
-        LocalGitSource(tiny_repo, base_ref="main", head_ref="feature")
-    )
+    result = Pipeline(cfg).run(LocalGitSource(tiny_repo, base_ref="main", head_ref="feature"))
 
     assert result.structural_only
     assert result.stats["mode"] == "structural-only"
@@ -271,8 +267,6 @@ def test_forcing_a_provider_does_not_conjure_a_key(monkeypatch, tiny_repo: Path)
     assert cfg.resolve_chain("deep") == []
     assert not cfg.has_llm()
 
-    result = Pipeline(cfg).run(
-        LocalGitSource(tiny_repo, base_ref="main", head_ref="feature")
-    )
+    result = Pipeline(cfg).run(LocalGitSource(tiny_repo, base_ref="main", head_ref="feature"))
     assert result.structural_only
     assert result.findings == []

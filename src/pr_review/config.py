@@ -163,22 +163,30 @@ DEFAULT_PROVIDERS: dict[str, ProviderConfig] = {
 # prompt costs one request instead of most of a minute's token budget.
 DEFAULT_TIERS: dict[str, TierConfig] = {
     "planner": TierConfig(
-        "groq", "openai/gpt-oss-20b", max_tokens=700,
+        "groq",
+        "openai/gpt-oss-20b",
+        max_tokens=700,
         fallbacks=(("openrouter", "minimax/minimax-m3:free"),),
     ),
     "basic": TierConfig(
-        "groq", "openai/gpt-oss-20b", max_tokens=1200,
+        "groq",
+        "openai/gpt-oss-20b",
+        max_tokens=1200,
         fallbacks=(("openrouter", "minimax/minimax-m3:free"),),
     ),
     "normal": TierConfig(
-        "openrouter", "minimax/minimax-m3:free", max_tokens=1600,
+        "openrouter",
+        "minimax/minimax-m3:free",
+        max_tokens=1600,
         fallbacks=(
             ("openrouter", "z-ai/glm-5.2:free"),
             ("groq", "openai/gpt-oss-120b"),
         ),
     ),
     "deep": TierConfig(
-        "openrouter", "minimax/minimax-m3:free", max_tokens=2200,
+        "openrouter",
+        "minimax/minimax-m3:free",
+        max_tokens=2200,
         fallbacks=(
             ("openrouter", "z-ai/glm-5.2:free"),
             ("opencode", "nemotron-3-ultra-free"),
@@ -188,7 +196,9 @@ DEFAULT_TIERS: dict[str, TierConfig] = {
     # Leads with a different model than deep on purpose: a model asked to check
     # its own output tends to agree with it.
     "verify": TierConfig(
-        "openrouter", "z-ai/glm-5.2:free", max_tokens=1200,
+        "openrouter",
+        "z-ai/glm-5.2:free",
+        max_tokens=1200,
         fallbacks=(
             ("openrouter", "minimax/minimax-m3:free"),
             ("groq", "openai/gpt-oss-120b"),
@@ -272,13 +282,9 @@ class VerificationConfig:
 
 @dataclass(frozen=True)
 class Config:
-    providers: dict[str, ProviderConfig] = field(
-        default_factory=lambda: dict(DEFAULT_PROVIDERS)
-    )
+    providers: dict[str, ProviderConfig] = field(default_factory=lambda: dict(DEFAULT_PROVIDERS))
     tiers: dict[str, TierConfig] = field(default_factory=lambda: dict(DEFAULT_TIERS))
-    models: dict[str, ModelLimits] = field(
-        default_factory=lambda: dict(DEFAULT_MODEL_LIMITS)
-    )
+    models: dict[str, ModelLimits] = field(default_factory=lambda: dict(DEFAULT_MODEL_LIMITS))
     depth_tier: dict[str, str] = field(default_factory=lambda: dict(DEFAULT_DEPTH_TIER))
     tier_degradation: dict[str, tuple[str, ...]] = field(
         default_factory=lambda: dict(DEFAULT_TIER_DEGRADATION)
@@ -361,7 +367,10 @@ class Config:
                 return []
             return [
                 Candidate(
-                    self.force_provider, model, tier.max_tokens, tier.temperature,
+                    self.force_provider,
+                    model,
+                    tier.max_tokens,
+                    tier.temperature,
                     tier_name,
                     input_budget_bytes=self.input_budget_bytes(model, tier.max_tokens),
                 )
@@ -386,8 +395,12 @@ class Config:
             src = self.tiers.get(source_tier, tier)
             out.append(
                 Candidate(
-                    provider_name, model, src.max_tokens, src.temperature,
-                    source_tier, degraded,
+                    provider_name,
+                    model,
+                    src.max_tokens,
+                    src.temperature,
+                    source_tier,
+                    degraded,
                     input_budget_bytes=self.input_budget_bytes(model, src.max_tokens),
                 )
             )

@@ -87,9 +87,9 @@ class DeterministicAnalyzer:
         touches_tests = any(
             any(seg in f.path.lower() for seg in ("test", "spec")) for f in result.files
         )
-        non_trivial = result.changed_file_count > 3 or (
-            result.total_additions + result.total_deletions
-        ) > 120
+        non_trivial = (
+            result.changed_file_count > 3 or (result.total_additions + result.total_deletions) > 120
+        )
         result.signals = {
             "dependency_files_changed": bool(result.dependency_changes),
             "new_top_level_dir": _new_top_dirs(result, meta),
@@ -99,13 +99,9 @@ class DeterministicAnalyzer:
             "large_change": (result.total_additions + result.total_deletions) > 400
             or result.changed_file_count > 15,
             "only_docs": result.files
-            and all(
-                f.path.lower().endswith((".md", ".rst", ".txt")) for f in result.files
-            ),
+            and all(f.path.lower().endswith((".md", ".rst", ".txt")) for f in result.files),
             "test_paths_known": list(test_paths),
-            "symbols_removed": [
-                s.name for s in result.changed_symbols if s.change == "removed"
-            ],
+            "symbols_removed": [s.name for s in result.changed_symbols if s.change == "removed"],
         }
         return result
 

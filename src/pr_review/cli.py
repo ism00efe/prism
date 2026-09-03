@@ -74,8 +74,12 @@ def _run(args: argparse.Namespace) -> int:
                 raise
             # No event and no --base: fall back to HEAD~1..HEAD locally.
             source = LocalGitSource(
-                args.repo, base_ref="HEAD~1", head_ref="HEAD",
-                title=args.title, body=args.body, diff_bytes=cfg.limits.diff_bytes,
+                args.repo,
+                base_ref="HEAD~1",
+                head_ref="HEAD",
+                title=args.title,
+                body=args.body,
+                diff_bytes=cfg.limits.diff_bytes,
             )
     else:
         source = LocalGitSource(
@@ -102,9 +106,9 @@ def _run(args: argparse.Namespace) -> int:
         print(rendered.get("markdown", next(iter(rendered.values()), "")))
 
     blockers = [
-        vf for vf in result.surfaced()
-        if vf.finding.severity == "blocker"
-        and vf.result.verdict.value in ("valid", "uncertain")
+        vf
+        for vf in result.surfaced()
+        if vf.finding.severity == "blocker" and vf.result.verdict.value in ("valid", "uncertain")
     ]
     return 2 if blockers else 0
 

@@ -4,8 +4,13 @@ from pr_review.models import PRContext, RepoMetadata
 
 def _pr(diff: str) -> PRContext:
     return PRContext(
-        title="feat: x", body="", base_ref="main", head_ref="feature",
-        base_sha="0", head_sha="1", diff=diff,
+        title="feat: x",
+        body="",
+        base_ref="main",
+        head_ref="feature",
+        base_sha="0",
+        head_sha="1",
+        diff=diff,
     )
 
 

@@ -34,10 +34,20 @@ MANIFESTS: dict[str, str] = {
 DEP_FILE_NAMES = set(MANIFESTS) | {"requirements-dev.txt", "constraints.txt"}
 
 _FRAMEWORK_MARKERS = {
-    "django": "Django", "flask": "Flask", "fastapi": "FastAPI", "pytest": "pytest",
-    "react": "React", "next": "Next.js", "vue": "Vue", "svelte": "Svelte",
-    "express": "Express", "spring-boot": "Spring Boot", "rails": "Rails",
-    "gin-gonic": "Gin", "actix": "Actix", "tokio": "Tokio",
+    "django": "Django",
+    "flask": "Flask",
+    "fastapi": "FastAPI",
+    "pytest": "pytest",
+    "react": "React",
+    "next": "Next.js",
+    "vue": "Vue",
+    "svelte": "Svelte",
+    "express": "Express",
+    "spring-boot": "Spring Boot",
+    "rails": "Rails",
+    "gin-gonic": "Gin",
+    "actix": "Actix",
+    "tokio": "Tokio",
 }
 
 

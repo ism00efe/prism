@@ -45,14 +45,10 @@ def merge_base(base_ref: str, head_ref: str, cwd: Path) -> str:
     return mb or base_ref
 
 
-def collect_diff(
-    base: str, head: str, cwd: Path, *, diff_bytes: int
-) -> tuple[str, bool]:
+def collect_diff(base: str, head: str, cwd: Path, *, diff_bytes: int) -> tuple[str, bool]:
     """Unified diff of ``base...head``, retrying with less context if oversized."""
     for unified in (12, 5, 3):
-        text = try_git(
-            ["diff", f"--unified={unified}", f"{base}...{head}"], cwd
-        )
+        text = try_git(["diff", f"--unified={unified}", f"{base}...{head}"], cwd)
         if not text:
             text = try_git(["diff", f"--unified={unified}", base, head], cwd)
         if len(text.encode()) <= diff_bytes:

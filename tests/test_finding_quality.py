@@ -66,8 +66,11 @@ def _config() -> Config:
 
 def _task(axis: str) -> ReviewTask:
     return ReviewTask(
-        axis=axis, depth="basic", model_tier="basic",
-        context_strategy="default", context_spec=ContextSpec(),
+        axis=axis,
+        depth="basic",
+        model_tier="basic",
+        context_strategy="default",
+        context_spec=ContextSpec(),
     )
 
 
@@ -75,8 +78,12 @@ def _pr() -> PRContext:
     return PRContext(
         title="feat: add capability resolver",
         body="Adds the resolver and wires it into the provider.",
-        base_ref="main", head_ref="feature", base_sha="a", head_sha="b",
-        diff="", changed_paths=(".gitignore", "docs/configuration.md"),
+        base_ref="main",
+        head_ref="feature",
+        base_sha="a",
+        head_sha="b",
+        diff="",
+        changed_paths=(".gitignore", "docs/configuration.md"),
     )
 
 
@@ -164,7 +171,10 @@ def test_file_scoped_axis_still_asks_for_a_file():
 def test_unanchored_evidence_caps_confidence(tmp_path: Path):
     (tmp_path / ".gitignore").write_text("__pycache__/\n*.pyc\n")
     finding = Finding(
-        axis="scope", severity="warning", file=".gitignore", line=None,
+        axis="scope",
+        severity="warning",
+        file=".gitignore",
+        line=None,
         issue="scope mismatch",
         evidence="The diff shows changes only to .gitignore and the docs.",
         confidence=0.99,
@@ -183,8 +193,13 @@ def test_unanchored_evidence_caps_confidence(tmp_path: Path):
 
 def test_whole_pr_finding_is_not_penalised_for_having_no_file(tmp_path: Path):
     finding = Finding(
-        axis="scope", severity="warning", file="-", line=None,
-        issue="scope mismatch", evidence="docs only", confidence=0.7,
+        axis="scope",
+        severity="warning",
+        file="-",
+        line=None,
+        issue="scope mismatch",
+        evidence="docs only",
+        confidence=0.7,
     )
     det = DeterministicVerifier().verify(
         finding, repo_root=tmp_path, pr=_pr(), analysis=_analysis(), meta=None
@@ -212,13 +227,15 @@ def test_llm_verifier_receives_the_unanchored_warning(_verifier_probe, tmp_path:
     _cfg, stub, verifier = _verifier_probe
     (tmp_path / ".gitignore").write_text("__pycache__/\n")
     finding = Finding(
-        axis="scope", severity="warning", file=".gitignore", line=None,
-        issue="scope mismatch", evidence="a sentence that is not in the file",
+        axis="scope",
+        severity="warning",
+        file=".gitignore",
+        line=None,
+        issue="scope mismatch",
+        evidence="a sentence that is not in the file",
         confidence=0.6,
     )
-    prior = VerdictResult(
-        Verdict.UNCERTAIN, method="deterministic", checks=[EVIDENCE_NOT_ANCHORED]
-    )
+    prior = VerdictResult(Verdict.UNCERTAIN, method="deterministic", checks=[EVIDENCE_NOT_ANCHORED])
     result = verifier.verify(
         finding, repo_root=tmp_path, pr=_pr(), analysis=_analysis(), meta=None, prior=prior
     )
@@ -232,9 +249,13 @@ def test_whole_pr_claim_is_verified_against_the_change_not_a_file_slice(
 ):
     _cfg, stub, verifier = _verifier_probe
     finding = Finding(
-        axis="scope", severity="warning", file="-", line=None,
+        axis="scope",
+        severity="warning",
+        file="-",
+        line=None,
         issue="the PR claims code changes but only docs changed",
-        evidence="only .gitignore and docs/ appear in the diff", confidence=0.6,
+        evidence="only .gitignore and docs/ appear in the diff",
+        confidence=0.6,
     )
     verifier.verify(
         finding, repo_root=tmp_path, pr=_pr(), analysis=_analysis(), meta=None, prior=None
@@ -258,9 +279,7 @@ def test_a_subdirectory_root_is_lifted_to_the_git_top_level(tiny_repo: Path):
     one level too deep. Nothing raised: the review simply ran on the diff with
     no file bodies, and every finding came back unanchored.
     """
-    pr, root = LocalGitSource(
-        tiny_repo / "src", base_ref="main", head_ref="feature"
-    ).load()
+    pr, root = LocalGitSource(tiny_repo / "src", base_ref="main", head_ref="feature").load()
 
     assert root == tiny_repo.resolve()
     assert pr.extra["repo_root_adjusted"] == str(tiny_repo.resolve())
@@ -276,12 +295,15 @@ def test_root_is_left_alone_when_it_already_is_the_top_level(tiny_repo: Path):
 
 
 def test_findings_anchor_when_the_review_started_from_a_subdirectory(tiny_repo: Path):
-    _pr, root = LocalGitSource(
-        tiny_repo / "tests", base_ref="main", head_ref="feature"
-    ).load()
+    _pr, root = LocalGitSource(tiny_repo / "tests", base_ref="main", head_ref="feature").load()
     finding = Finding(
-        axis="correctness", severity="warning", file="src/calc.py", line=None,
-        issue="divide has no zero check", evidence="def divide(a, b):", confidence=0.8,
+        axis="correctness",
+        severity="warning",
+        file="src/calc.py",
+        line=None,
+        issue="divide has no zero check",
+        evidence="def divide(a, b):",
+        confidence=0.8,
     )
     det = DeterministicVerifier().verify(
         finding, repo_root=root, pr=_pr, analysis=_analysis(), meta=None
@@ -330,8 +352,13 @@ _SOURCE = """class PaymentService:
 def test_quote_detection(tmp_path: Path, evidence: str, anchored: bool, judged: bool):
     (tmp_path / "payment_service.py").write_text(_SOURCE)
     finding = Finding(
-        axis="correctness", severity="warning", file="payment_service.py", line=None,
-        issue="GBP is accepted but not priced", evidence=evidence, confidence=0.97,
+        axis="correctness",
+        severity="warning",
+        file="payment_service.py",
+        line=None,
+        issue="GBP is accepted but not priced",
+        evidence=evidence,
+        confidence=0.97,
     )
     det = DeterministicVerifier().verify(
         finding, repo_root=tmp_path, pr=_pr(), analysis=_analysis(), meta=None
