@@ -1,5 +1,7 @@
 # pr-review
 
+[![CI](https://github.com/ism00efe/prism/actions/workflows/ci.yml/badge.svg)](https://github.com/ism00efe/prism/actions/workflows/ci.yml)
+
 A repository-agnostic, modular AI pull-request review engine for GitHub.
 
 It implements one adaptive process:
